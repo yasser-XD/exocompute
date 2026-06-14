@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ExoCompute Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "surface-tint": "#95d4ac",
+                        "secondary-container": "#38485b",
+                        "secondary": "#b7c8df",
+                        "inverse-primary": "#2c6a48",
+                        "surface-bright": "#37393e",
+                        "surface": "#111317",
+                        "tertiary": "#c1c7cf",
+                        "surface-variant": "#333539",
+                        "on-secondary-fixed-variant": "#38485b",
+                        "on-tertiary-container": "#242a30",
+                        "on-secondary-fixed": "#0b1d2d",
+                        "primary-container": "#609d78",
+                        "outline-variant": "#404942",
+                        "secondary-fixed": "#d3e4fb",
+                        "inverse-surface": "#e2e2e8",
+                        "on-surface": "#e2e2e8",
+                        "on-surface-variant": "#c0c9c0",
+                        "on-primary-fixed": "#002111",
+                        "on-tertiary": "#2b3137",
+                        "tertiary-container": "#8b9199",
+                        "primary": "#95d4ac",
+                        "surface-container-lowest": "#0c0e12",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#282a2e",
+                        "on-secondary-container": "#a6b7cd",
+                        "primary-fixed": "#b0f1c7",
+                        "on-secondary": "#223243",
+                        "surface-container-low": "#1a1c20",
+                        "secondary-fixed-dim": "#b7c8df",
+                        "surface-dim": "#111317",
+                        "inverse-on-surface": "#2f3035",
+                        "tertiary-fixed": "#dde3eb",
+                        "primary-fixed-dim": "#95d4ac",
+                        "tertiary-fixed-dim": "#c1c7cf",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#41474e",
+                        "surface-container": "#1e2024",
+                        "on-primary": "#003920",
+                        "on-primary-fixed-variant": "#0f5132",
+                        "surface-container-highest": "#333539",
+                        "on-background": "#e2e2e8",
+                        "on-primary-container": "#00311b",
+                        "error": "#ffb4ab",
+                        "outline": "#8a938b",
+                        "on-tertiary-fixed": "#161c22",
+                        "background": "#111317"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Geist"],
+                        "headline-lg-mobile": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-sm": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #111317;
+            color: #e2e2e8;
+            overflow: hidden;
+        }
+        .panel-transition {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease;
+        }
+        .qr-frame {
+            border: 1px solid #2D3748;
+            background: linear-gradient(135deg, rgba(26, 29, 35, 0.8) 0%, rgba(17, 19, 23, 0.9) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .qr-frame::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, transparent 48%, #95d4ac 50%, transparent 52%);
+            background-size: 200% 200%;
+            opacity: 0.05;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .glass-overlay {
+            backdrop-filter: blur(20px);
+            background: rgba(17, 19, 23, 0.4);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md h-screen flex flex-col">
+<!-- Top Bar Navigation Shell - Simplified for Onboarding -->
+<header class="w-full top-0 sticky border-b border-outline-variant bg-surface flex justify-between items-center px-margin-desktop py-unit h-16 z-50">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary">ExoCompute</span>
+<div class="h-4 w-px bg-outline-variant mx-2"></div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Initialization Protocol</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span>SYSTEM_READY</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant transition-colors p-2 rounded">help_outline</button>
+</div>
+</header>
+<main class="flex-grow flex flex-col md:flex-row relative">
+<!-- Background Animation Layer -->
+
+<!-- Left Panel: Lender Node -->
+<section class="flex-1 flex flex-col items-center justify-center p-8 md:p-16 border-b md:border-b-0 md:border-r border-outline-variant group panel-transition hover:bg-surface-container-low relative z-10 overflow-hidden">
+<div class="max-w-md w-full text-center space-y-8">
+<div class="space-y-4">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary-container/10 border border-primary/20 mb-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">memory</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Join as Lender Node</h2>
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                        Monetize your idle GPU/CPU cycles. Connect to our distributed infrastructure and earn compute credits in real-time.
+                    </p>
+</div>
+<div class="qr-frame p-6 rounded-xl inline-block mx-auto">
+<img alt="Lender Node QR Code" class="w-40 h-40" data-alt="A clean, high-contrast QR code generated in a Sage Emerald green color on a dark charcoal background. The QR code is framed by a subtle technical border with small corner markers. The visual style is industrial and digital, emphasizing precision and secure connectivity in a cloud computing environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoAi235IhBQluzWbkSABYOsSB0v9oGE2sAu_WQnS2mM9RHgvDybJGUiuHwlq-NN5CuPTo2cHajfJ2Ay4bnvBRVp4Erey64RMOkGDy2fY69QijbXMyoL8A5egLcRXOCvBRgP__MiO0xMwS6qK4_oWJtKiiMdnd71GzNImxDSmNZLWVcMpGu_Ck1wphuQXJs0EqcBjAHPdOMpLdaR2HrLp5duy4_hC4SIY3LpSZ9N1SV6q40S5Z9enuJypRpclXtAUaZaasNleoRjD2T"/>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-center gap-2 group/link cursor-pointer">
+<span class="font-label-md text-label-md text-primary underline underline-offset-4">nodes.exocompute.io/connect</span>
+<span class="material-symbols-outlined text-primary text-[14px]">content_copy</span>
+</div>
+<button class="w-full py-4 px-6 bg-surface-container-high border border-outline-variant hover:border-primary transition-all text-on-surface font-label-md flex items-center justify-center gap-3">
+<span class="material-symbols-outlined">download</span>
+                        DOWNLOAD CLI TOOLS
+                    </button>
+</div>
+</div>
+</section>
+<!-- Right Panel: Dispatch Job -->
+<section class="flex-1 flex flex-col items-center justify-center p-8 md:p-16 group panel-transition hover:bg-surface-container-low relative z-10 overflow-hidden">
+<div class="max-w-md w-full text-center space-y-8">
+<div class="space-y-4">
+<div class="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-secondary-container/20 border border-secondary/20 mb-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">lan</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Dispatch a Job</h2>
+<p class="text-on-surface-variant font-body-md leading-relaxed">
+                        Orchestrate complex workloads across our global grid via WhatsApp or API. High-performance computing, simplified.
+                    </p>
+</div>
+<div class="qr-frame p-6 rounded-xl inline-block mx-auto border-secondary/20">
+<img alt="WhatsApp Job Dispatch QR Code" class="w-40 h-40" data-alt="A sleek digital QR code rendered in a muted slate blue color against a deep black background. The frame has refined industrial detailing, suggesting a secure communication channel. The aesthetic is professional and mature, fitting for a sophisticated DevOps or system orchestration tool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8H73Rp1AG3hTZ3vP-TRsKj1KAG5HrvkIzgwLwH0unX1FY0h1ZmgmFLSGPSYsdQttWOR65YTeTRDjKJf7l723fu4HMarGp-oMj4ATwAAuWiZfD8BQYsKwoh5AbJSK89ajuiRDD7Nv_7-Uvkxso-fFke-w3tRr2jJm0rK7N1RELQOkOn0KFRvGDRrW9iVQCK6ShDdxYoXg7mDikj-feFw0remI568CLRoM4b-48fHazMeLHdPPRxhDJsY34__y7iqPncNxiolPEG-19"/>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-center gap-2 group/link cursor-pointer">
+<span class="font-label-md text-label-md text-secondary underline underline-offset-4">wa.me/exocompute_bot</span>
+<span class="material-symbols-outlined text-secondary text-[14px]">open_in_new</span>
+</div>
+<button class="w-full py-4 px-6 bg-primary text-on-primary font-label-md flex items-center justify-center gap-3 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        DEPLOY INSTANT JOB
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer: Network Stats Status Bar -->
+<footer class="w-full bottom-0 sticky border-t border-outline-variant bg-surface-container-lowest text-surface-tint font-label-sm flex justify-between items-center px-margin-desktop py-2 h-8 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>NETWORK STATUS: NOMINAL</span>
+</div>
+<div class="hidden md:flex items-center gap-6 opacity-60">
+<div class="flex items-center gap-1">
+<span class="text-on-surface-variant">NODES:</span>
+<span>14,292</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="text-on-surface-variant">THROUGHPUT:</span>
+<span>84.2 PFLOPS</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="text-on-surface-variant">LATENCY:</span>
+<span>12ms</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="opacity-60">© 2024 ExoCompute Infrastructure</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<a class="hover:text-primary transition-colors" href="#">v4.2.0-STABLE</a>
+</div>
+</footer>
+<!-- Micro-interaction Scripts -->
+<script>
+        // Simple interactive effect for panel hovering
+        const panels = document.querySelectorAll('section');
+        panels.forEach(panel => {
+            panel.addEventListener('mouseenter', () => {
+                panel.style.boxShadow = "inset 0 0 100px rgba(149, 212, 172, 0.05)";
+            });
+            panel.addEventListener('mouseleave', () => {
+                panel.style.boxShadow = "none";
+            });
+        });
+
+        // Copy logic simulation
+        const copyBtn = document.querySelector('.group\\/link');
+        if(copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const icon = copyBtn.querySelector('.material-symbols-outlined');
+                const originalText = icon.innerText;
+                icon.innerText = 'check';
+                setTimeout(() => icon.innerText = originalText, 2000);
+            });
+        }
+    </script>
+</body></html>

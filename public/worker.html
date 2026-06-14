@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>ExoCompute | Node Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@300;400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #111317;
+            color: #e2e2e8;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(26, 29, 35, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2D3748;
+        }
+        .status-pulse {
+            animation: pulse-emerald 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .status-pulse-offline {
+            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-emerald {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .7; transform: scale(1.2); }
+        }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .4; transform: scale(1.2); }
+        }
+        .ticker-line {
+            background: linear-gradient(90deg, transparent, #95d4ac, transparent);
+            height: 1px;
+            width: 100%;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #111317; }
+        ::-webkit-scrollbar-thumb { background: #404942; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #95d4ac; }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "surface-tint": "#95d4ac",
+                        "secondary-container": "#38485b",
+                        "secondary": "#b7c8df",
+                        "inverse-primary": "#2c6a48",
+                        "surface-bright": "#37393e",
+                        "surface": "#111317",
+                        "tertiary": "#c1c7cf",
+                        "surface-variant": "#333539",
+                        "on-secondary-fixed-variant": "#38485b",
+                        "on-tertiary-container": "#242a30",
+                        "on-secondary-fixed": "#0b1d2d",
+                        "primary-container": "#609d78",
+                        "outline-variant": "#404942",
+                        "secondary-fixed": "#d3e4fb",
+                        "inverse-surface": "#e2e2e8",
+                        "on-surface": "#e2e2e8",
+                        "on-surface-variant": "#c0c9c0",
+                        "on-primary-fixed": "#002111",
+                        "on-tertiary": "#2b3137",
+                        "tertiary-container": "#8b9199",
+                        "primary": "#95d4ac",
+                        "surface-container-lowest": "#0c0e12",
+                        "error-container": "#93000a",
+                        "surface-container-high": "#282a2e",
+                        "on-secondary-container": "#a6b7cd",
+                        "primary-fixed": "#b0f1c7",
+                        "on-secondary": "#223243",
+                        "surface-container-low": "#1a1c20",
+                        "secondary-fixed-dim": "#b7c8df",
+                        "surface-dim": "#111317",
+                        "inverse-on-surface": "#2f3035",
+                        "tertiary-fixed": "#dde3eb",
+                        "primary-fixed-dim": "#95d4ac",
+                        "tertiary-fixed-dim": "#c1c7cf",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#41474e",
+                        "surface-container": "#1e2024",
+                        "on-primary": "#003920",
+                        "on-primary-fixed-variant": "#0f5132",
+                        "surface-container-highest": "#333539",
+                        "on-background": "#e2e2e8",
+                        "on-primary-container": "#00311b",
+                        "error": "#ffb4ab",
+                        "outline": "#8a938b",
+                        "on-tertiary-fixed": "#161c22",
+                        "background": "#111317"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Hanken Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Geist"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-sm": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface">
+<div class="flex h-screen overflow-hidden">
+    <!-- SideNavBar -->
+    <aside class="h-screen w-64 left-0 sticky bg-surface-container border-r border-outline-variant flex flex-col py-margin-desktop transition-all duration-200 shrink-0">
+        <div class="px-6 mb-10 flex flex-col gap-1">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-primary rounded-sm flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-primary text-xl" style="font-variation-settings: 'FILL' 1;">memory</span>
+                </div>
+                <span class="font-headline-md text-headline-md text-primary tracking-tight">ExoCompute</span>
+            </div>
+            <div class="mt-4 px-2 py-1 border border-outline-variant rounded bg-surface-container-low">
+                <div class="flex items-center justify-between">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant">NODE_ID</span>
+                    <span class="font-label-sm text-label-sm text-primary" id="node-id-display">Connecting...</span>
+                </div>
+            </div>
+        </div>
+        <nav class="flex-1 space-y-1">
+            <a class="flex items-center px-6 py-3 text-primary border-l-4 border-primary bg-secondary-container/20 transition-all duration-200" href="#">
+                <span class="material-symbols-outlined mr-3">dashboard</span>
+                <span class="font-label-md text-label-md">Dashboard</span>
+            </a>
+            <a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-200" href="#">
+                <span class="material-symbols-outlined mr-3">terminal</span>
+                <span class="font-label-md text-label-md">Task Console</span>
+            </a>
+        </nav>
+        <div class="px-6 pt-4 mt-auto border-t border-outline-variant space-y-1">
+            <div class="flex items-center gap-2 py-2 text-on-surface-variant">
+                <span class="font-label-sm text-label-sm">Status:</span>
+                <span class="font-label-sm text-label-sm text-primary uppercase" id="sidebar-status">Connecting</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col overflow-y-auto bg-surface">
+        <!-- TopNavBar -->
+        <header class="w-full top-0 sticky z-30 bg-surface border-b border-outline-variant flex justify-between items-center px-margin-desktop h-16 shrink-0">
+            <div class="flex items-center gap-6 flex-1">
+                <div class="font-headline-md text-headline-md text-primary">Lender Workspace</div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2 pr-4 border-r border-outline-variant">
+                    <div class="flex items-center gap-2 bg-surface-container border border-outline-variant px-3 py-1 rounded-sm">
+                        <span class="w-2 h-2 rounded-full bg-error" id="status-dot"></span>
+                        <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant" id="status-text">OFFLINE</span>
+                    </div>
+                </div>
+                <div class="w-8 h-8 rounded-full overflow-hidden border border-outline bg-surface-container flex items-center justify-center">
+                    <span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="p-margin-desktop space-y-gutter flex-1">
+            <!-- Status Hero Section -->
+            <section class="grid grid-cols-12 gap-gutter">
+                <div class="col-span-12 lg:col-span-8 relative rounded-sm border border-outline-variant overflow-hidden h-[220px] bg-surface-container-low p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-3 h-3 rounded-full bg-error" id="hero-status-dot"></div>
+                            <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest" id="hero-status-title">NODE STATUS: OFFLINE</span>
+                        </div>
+                        <h1 class="font-headline-lg text-headline-lg text-on-surface">P2P Inference Worker</h1>
+                        <p class="text-on-surface-variant font-body-md max-w-md mt-2">Ready to receive execution shards from the ExoCompute Orchestrator. Maintain this tab open to participate in the mesh.</p>
+                    </div>
+                </div>
+
+                <!-- Session Earnings Panel -->
+                <div class="col-span-12 lg:col-span-4 glass-panel p-6 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <span class="font-label-md text-label-md text-on-surface-variant">SESSION EARNINGS</span>
+                            <span class="material-symbols-outlined text-primary text-xl">payments</span>
+                        </div>
+                        <div class="space-y-1">
+                            <h2 class="font-headline-lg text-[42px] leading-tight text-primary font-bold" id="earnings-display">$0.0000</h2>
+                            <p class="font-label-sm text-label-sm text-on-surface-variant">Accumulated share (85% payout rate)</p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="ticker-line"></div>
+                        <div class="flex justify-between text-on-surface-variant">
+                            <span class="font-label-sm text-label-sm">PRICE PER 1M TOKENS</span>
+                            <span class="font-label-sm text-label-sm text-on-surface">$0.80</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Metrics Row -->
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                <div class="bg-surface-container-low border border-outline-variant p-5 rounded-sm">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">TOKENS / SEC (TPS)</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-headline-md text-headline-md text-on-surface" id="tps-display">0.00</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant p-5 rounded-sm">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">TOKENS PROCESSED</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-headline-md text-headline-md text-on-surface" id="tokens-display">0</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant p-5 rounded-sm">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">AVG TASK DURATION</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-headline-md text-headline-md text-on-surface" id="avg-duration-display">0</span>
+                        <span class="font-label-sm text-label-sm text-on-surface-variant">MS</span>
+                    </div>
+                </div>
+                <div class="bg-surface-container-low border border-outline-variant p-5 rounded-sm">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">EST. REVENUE / HOUR</span>
+                    <div class="flex items-baseline gap-2">
+                        <span class="font-headline-md text-headline-md text-primary" id="rev-hour-display">$0.0000</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Task Log Table -->
+            <section class="bg-surface-container border border-outline-variant rounded-sm overflow-hidden">
+                <div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-on-surface-variant">terminal</span>
+                        <h3 class="font-headline-md text-headline-md text-on-surface">Real-time Task Log</h3>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-surface-container-lowest border-b border-outline-variant">
+                                <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">TASK ID</th>
+                                <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">PROMPT</th>
+                                <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant">FROM</th>
+                                <th class="px-6 py-3 font-label-sm text-label-sm text-on-surface-variant text-right">TIMESTAMP</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-outline-variant font-label-md text-label-md" id="task-log-body">
+                            <tr id="empty-row">
+                                <td class="px-6 py-8 text-center text-on-surface-variant" colspan="4">
+                                    No tasks received yet. Waiting for WebSocket events...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="w-full bg-surface-container-lowest border-t border-outline-variant flex justify-between items-center px-margin-desktop h-8 shrink-0">
+            <div class="flex items-center gap-4">
+                <span class="font-label-sm text-label-sm text-on-surface-variant">© 2026 ExoCompute Infrastructure. • Phase 1 Core WebSocket Client</span>
+            </div>
+        </footer>
+    </main>
+</div>
+
+<!-- Socket.io Script & Live Logic -->
+<script src="/socket.io/socket.io.js"></script>
+<script type="module">
+    const socket = io();
+
+    // DOM Elements
+    const nodeIdDisplay = document.getElementById('node-id-display');
+    const sidebarStatus = document.getElementById('sidebar-status');
+    const statusDot = document.getElementById('status-dot');
+    const statusText = document.getElementById('status-text');
+    const heroStatusDot = document.getElementById('hero-status-dot');
+    const heroStatusTitle = document.getElementById('hero-status-title');
+    const taskLogBody = document.getElementById('task-log-body');
+    const emptyRow = document.getElementById('empty-row');
+
+    // UI Updates based on state
+    function setConnectionState(state) {
+        if (state === 'connected') {
+            sidebarStatus.textContent = 'IDLE';
+            sidebarStatus.className = 'font-label-sm text-label-sm text-primary uppercase';
+            
+            statusText.textContent = '🟢 IDLE';
+            statusDot.className = 'w-2 h-2 rounded-full bg-primary status-pulse';
+            
+            heroStatusTitle.textContent = 'NODE STATUS: IDLE';
+            heroStatusDot.className = 'w-3 h-3 rounded-full bg-primary status-pulse';
+        } else {
+            sidebarStatus.textContent = 'OFFLINE';
+            sidebarStatus.className = 'font-label-sm text-label-sm text-error uppercase';
+            
+            statusText.textContent = '🔴 OFFLINE';
+            statusDot.className = 'w-2 h-2 rounded-full bg-error';
+            
+            heroStatusTitle.textContent = 'NODE STATUS: OFFLINE';
+            heroStatusDot.className = 'w-3 h-3 rounded-full bg-error';
+            
+            nodeIdDisplay.textContent = 'Offline';
+        }
+    }
+
+    // Socket Connection Logic
+    socket.on('connect', () => {
+        console.log('Connected to server, socket ID:', socket.id);
+        nodeIdDisplay.textContent = `#XC-${socket.id.substring(0, 6).toUpperCase()}`;
+        setConnectionState('connected');
+
+        // Register as a worker
+        socket.emit('register', { role: 'worker' });
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Disconnected from server');
+        setConnectionState('disconnected');
+    });
+
+    // Listen for task dispatch
+    socket.on('task:dispatch', (task) => {
+        console.log('Received task dispatch:', task);
+
+        // Remove empty placeholder row if it exists
+        if (emptyRow) {
+            emptyRow.remove();
+        }
+
+        // Add task row to the top of the table
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-surface-variant/30 transition-colors border-b border-outline-variant';
+        
+        const timeStr = new Date(task.timestamp).toLocaleTimeString();
+
+        // Sanitize inputs using textContent
+        const taskIdTd = document.createElement('td');
+        taskIdTd.className = 'px-6 py-4 text-primary';
+        taskIdTd.textContent = task.taskId.substring(0, 8) + '...';
+
+        const promptTd = document.createElement('td');
+        promptTd.className = 'px-6 py-4 text-on-surface max-w-xs truncate';
+        promptTd.textContent = task.prompt;
+
+        const fromTd = document.createElement('td');
+        fromTd.className = 'px-6 py-4 text-on-surface-variant';
+        fromTd.textContent = task.from;
+
+        const timeTd = document.createElement('td');
+        timeTd.className = 'px-6 py-4 text-right text-on-surface-variant';
+        timeTd.textContent = timeStr;
+
+        row.appendChild(taskIdTd);
+        row.appendChild(promptTd);
+        row.appendChild(fromTd);
+        row.appendChild(timeTd);
+
+        taskLogBody.insertBefore(row, taskLogBody.firstChild);
+    });
+</script>
+</body>
+</html>
