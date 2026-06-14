@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/ui/stich/orchestrator.html" },
+    { "source": "/worker.html", "destination": "/ui/stich/worker.html" }
+  ]
+}
