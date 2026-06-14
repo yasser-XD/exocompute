@@ -2,7 +2,7 @@
   "framework": null,
   "buildCommand": "echo 'Static build'",
   "outputDirectory": "ui/stich",
-  "rewrites": [
-    { "source": "/", "destination": "/orchestrator.html" }
+  "redirects": [
+    { "source": "/", "destination": "/orchestrator.html", "permanent": false }
   ]
 }
