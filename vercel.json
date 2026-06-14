@@ -1,6 +1,0 @@
-{
-  "outputDirectory": "ui/stich",
-  "rewrites": [
-    { "source": "/", "destination": "/orchestrator.html" }
-  ]
-}
